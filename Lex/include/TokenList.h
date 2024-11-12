@@ -5,41 +5,31 @@
 #ifndef UNTITLED1_TOKENLIST_H
 #define UNTITLED1_TOKENLIST_H
 #include <string>
-#include <unordered_set>
 #include <unordered_map>
+#include <utility>
+
 
 namespace ctokens {
+     // Enumeration for token types
+    enum class TokType {
+        KW,
+        OP,
+        SE,
+        IDN,
+        INT,
+        FLOAT,
+        CHAR,
+        STR,
+        INVALID_TOK,
+        END_OF_FILE
+    };
 
     // External sets of keywords and preprocessor directives
-    extern std::unordered_set<std::string> keywords;
-    extern std::unordered_set<std::string> preprocessorDirectives;
+    extern std::unordered_map<std::string, std::pair<ctokens::TokType, int>> keywords;
+    extern std::unordered_map<std::string, std::pair<ctokens::TokType, int>> operators;
+    extern std::unordered_map<std::string, std::pair<ctokens::TokType, int>> ses;
 
-    // Enumeration for token types
-    enum class TokType {
-        KEYWORD,
-        IDENTIFIER,
-        END_OF_FILE,
-        PREPROCESSOR_DIRECTIVE,
-        ARITHMETIC_OPERATOR,
-        RELATIONAL_OPERATOR,
-        SPECIAL_SYMBOL,
-        LOGICAL_OPERATOR,
-        BITWISE_OPERATOR,
-        ASSIGNMENT_OPERATOR,
-        CHAR_CONST,
-        STRING,
-        OTHER_OPERATOR,
-        FLOAT_CONSTANT,
-        INT_CONSTANT,
-        INVALID_TOK,
-        BRACKET
-    };
-
-    // Helper class for printing token types
-    class TokTypeHelper {
-    public:
-        static std::string print(TokType obj);
-    };
+   
 
 } // namespace ctokens
 

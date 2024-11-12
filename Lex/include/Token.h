@@ -5,6 +5,7 @@
 #ifndef UNTITLED1_TOKEN_H
 #define UNTITLED1_TOKEN_H
 
+#include <utility>
 #ifndef TOKEN_H
 #define TOKEN_H
 
@@ -15,16 +16,19 @@
 class Token {
 private:
     // Data members
-    ctokens::TokType type;
     std::string lexeme;
+    std::pair<ctokens::TokType, int> p;
 
 public:
     // Constructor
-    Token(ctokens::TokType type, std::string lexeme);
+    Token(std::string lexeme, std::pair<ctokens::TokType, int> p);
+    //Constructor for invalid token, IDN, int, float, char, str
+    Token(std::string lexeme, ctokens::TokType tokType);
 
     // Accessors
-    [[nodiscard]] ctokens::TokType getType() const;
+    [[nodiscard]] const std::pair<ctokens::TokType, int> &getP() const;
     [[nodiscard]] const std::string &getLexeme() const;
+    std::string print() const;
 
     // Overloaded output operator
     friend std::ostream &operator<<(std::ostream &os, const Token &token);

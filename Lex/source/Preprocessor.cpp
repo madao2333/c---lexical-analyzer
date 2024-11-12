@@ -8,7 +8,6 @@
 void Preprocessor::preprocess()
 {
     this->comments();
-    this->directives();
     this->whitespace();
 }
 
@@ -46,21 +45,6 @@ void Preprocessor::comments()
     }
 }
 
-void Preprocessor::directives()
-{
-    for (const auto& directive : ctokens::preprocessorDirectives) {
-        size_t pos = 0;
-        while ((pos = code.find(directive, pos)) != std::string::npos) {
-            size_t end = code.find('\n', pos);
-            if (end == std::string::npos) {
-                code.erase(pos);
-                break;
-            } else {
-                code.erase(pos, end - pos);
-            }
-        }
-    }
-}
 
 void Preprocessor::whitespace()
 {

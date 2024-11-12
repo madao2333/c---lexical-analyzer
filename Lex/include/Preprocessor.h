@@ -28,8 +28,6 @@ public:
 private:
     void comments();
 
-    void directives();
-
     void whitespace();
 };
 

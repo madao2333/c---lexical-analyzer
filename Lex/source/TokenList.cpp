@@ -1,68 +1,22 @@
 //
 // Created by vivekdagar on 3/30/24.
 //
-
 #include <string>
+#include <utility>
 #include "../include/TokenList.h"
 
 namespace ctokens {
 
     // Textual Data
-    std::unordered_set<std::string> keywords = {"auto", "break", "case", "char",
-                                                "const", "continue", "default",
-                                                "do", "double", "else", "enum",
-                                                "extern", "float", "for", "goto",
-                                                "if", "inline", "int", "long",
-                                                "register", "restrict", "return",
-                                                "short", "signed", "sizeof",
-                                                "static", "struct", "switch",
-                                                "typedef", "union", "unsigned",
-                                                "void", "volatile", "while",
-                                                "sizeof", "true", "false"};
+    std::unordered_map<std::string, std::pair<ctokens::TokType, int>> keywords = {{"int", {ctokens::TokType::KW, 1}}, {"float", {ctokens::TokType::KW, 2}}, {"char", {ctokens::TokType::KW, 3}}, { "void", {ctokens::TokType::KW, 4}},
+                                                {"return", {ctokens::TokType::KW, 5}}, {"const", {ctokens::TokType::KW, 6}}, {"main", {ctokens::TokType::KW, 7}},
+                                                {"struct", {ctokens::TokType::KW, 8}}, {"union", {ctokens::TokType::KW, 9}}, {"switch", {ctokens::TokType::KW, 10}}};
 
-    std::unordered_set<std::string> preprocessorDirectives = {"#define", "#include", "#ifdef",
-                                                              "#ifndef", "#endif", "#if",
-                                                              "#else", "#elif", "#pragma", "#error",
-                                                              "#warning", "#line", "#undef"};
-
-    std::string TokTypeHelper::print(TokType obj) {
-        switch (obj) {
-            case TokType::KEYWORD:
-                return "KEYWORD";
-            case TokType::IDENTIFIER:
-                return "IDENTIFIER";
-            case TokType::PREPROCESSOR_DIRECTIVE:
-                return "PREPROCESSOR_DIRECTIVE";
-            case TokType::BRACKET:
-                return "BRACKET";
-            case TokType::INT_CONSTANT:
-                return "INT_CONSTANT";
-            case TokType::FLOAT_CONSTANT:
-                return "FLOAT_CONSTANT";
-            case TokType::ARITHMETIC_OPERATOR:
-                return "ARITHMETIC_OP";
-            case TokType::RELATIONAL_OPERATOR:
-                return "RELATIONAL_OP";
-            case TokType::ASSIGNMENT_OPERATOR:
-                return "ASSIGNMENT_OP";
-            case TokType::BITWISE_OPERATOR:
-                return "BITWISE_OP";
-            case TokType::LOGICAL_OPERATOR:
-                return "LOGICAL_OP";
-            case TokType::SPECIAL_SYMBOL:
-                return "SPECIAL_SYMBOL";
-            case TokType::OTHER_OPERATOR:
-                return "OTHER_OPERATOR";
-            case TokType::INVALID_TOK:
-                return "INVALID_TOK";
-            case TokType::CHAR_CONST:
-                return "CHAR_CONST";
-            case TokType::STRING:
-                return "STRING";
-            case TokType::END_OF_FILE:
-                return "END OF FILE";
-            default:
-                return "UNKNOWN"; // Handle unknown token types
-        }
-    }
+    std::unordered_map<std::string, std::pair<ctokens::TokType, int>> operators = {{"!", {ctokens::TokType::OP, 11}}, {"+", {ctokens::TokType::OP, 12}}, {"-", {ctokens::TokType::OP, 13}}, {"*", {ctokens::TokType::OP, 14}}, {"/", {ctokens::TokType::OP, 15}},
+                                                {"%", {ctokens::TokType::OP, 16}}, {"=", {ctokens::TokType::OP, 17}}, {">", {ctokens::TokType::OP, 18}}, {"<", {ctokens::TokType::OP, 19}}, 
+                                                {"==", {ctokens::TokType::OP, 20}}, {"<=", {ctokens::TokType::OP, 21}}, {">=", {ctokens::TokType::OP, 22}}, {"!=", {ctokens::TokType::OP, 23}},
+                                                 {"&&", {ctokens::TokType::OP, 24}}, {"||", {ctokens::TokType::OP, 25}}};
+    
+    std::unordered_map<std::string, std::pair<ctokens::TokType, int>> ses = {{"(", {ctokens::TokType::SE, 26}}, {")", {ctokens::TokType::SE, 27}}, {"{", {ctokens::TokType::SE, 28}}, {"}", {ctokens::TokType::SE, 29}}, 
+                                                {";", {ctokens::TokType::SE, 30}}, {",", {ctokens::TokType::SE, 31}}};
 } // ctokens

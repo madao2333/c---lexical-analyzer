@@ -9,10 +9,10 @@ int main()
 {
     string input = R"(
         // Test
-        #include "stdio.h"
-
-        int main() {
-            return 0;
+        int a = 10; 
+        int main(){ 
+            a=10; 
+            return 0; 
         }
     )";
 

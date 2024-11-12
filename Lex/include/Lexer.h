@@ -5,9 +5,11 @@
 #ifndef UNTITLED1_LEXER_H
 #define UNTITLED1_LEXER_H
 
+#include <utility>
 #include <vector>
 #include <ostream>
 #include "Token.h"
+#include "TokenList.h"
 
 class Lexer {
 public:
@@ -31,14 +33,12 @@ private:
 
 private:
     // Private utility functions
-    static bool scan(std::unordered_set<std::string> list, const std::string &word);
+    static std::unordered_map<std::string, std::pair<ctokens::TokType, int>>::iterator scan(std::unordered_map<std::string, std::pair<ctokens::TokType, int>> list, const std::string &word);
     static int isFloat(const std::string &str);
     static bool isArithOp(const char &ch);
-    static bool isOtherOp(const char &ch);
-    static bool isBracket(const char &currentChar);
+    static bool isSE(const char &currentChar);
 
     // Lexical analysis methods
-    void preprocDirective();
     void regularWord();
     void makeStr();
     void makeChar();
@@ -46,8 +46,6 @@ private:
     void skipSpc();
     void extractWord();
     void extractNum();
-    void handleArithOp(char i);
-    void handleOtherOp(char i);
 };
 
 

@@ -10,8 +10,6 @@ add_executable(untitled1 main.cpp
         Lex/include/Token.h
         Lex/source/Lexer.cpp
         Lex/include/Lexer.h
-        Tests/TokListTest.cpp
-        Tests/LexerTest.cpp
         Lex/source/Preprocessor.cpp
         Lex/include/Preprocessor.h
 )
