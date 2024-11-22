@@ -2,6 +2,7 @@
 // Created by vivekdagar on 4/2/24.
 //
 
+#include <cctype>
 #include <utility>
 #include <algorithm>
 #include <sstream>
@@ -27,7 +28,7 @@ void Lexer::regularWord() {
     std::string word;
 
     // Check for regular word
-    while (pos < input.length() and (isalpha(input[pos]) and not isspace(input[pos]))) {
+    while (pos < input.length() and ((isalpha(input[pos]) or input[pos] == '_' or std::isdigit(input[pos])) and not isspace(input[pos]))) {
         word += input[pos];
         pos++;
     }
@@ -89,7 +90,7 @@ void Lexer::advance() {
         this->makeChar();
         return;
     }
-    
+
     switch (currentChar) {
         case '=': {
             std::string op(1, currentChar);
@@ -155,8 +156,10 @@ void Lexer::advance() {
 
                     this->tokens.emplace_back(Token(logOp, scan(ctokens::operators, logOp)->second));
                 }
+            } else {
+                this->tokens.emplace_back(Token(std::string("") + currentChar, ctokens::TokType::INVALID_TOK));
+                this->pos++;
             }
-
         }
     }
 }

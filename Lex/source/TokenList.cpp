@@ -8,15 +8,16 @@
 namespace ctokens {
 
     // Textual Data
-    std::unordered_map<std::string, std::pair<ctokens::TokType, int>> keywords = {{"int", {ctokens::TokType::KW, 1}}, {"float", {ctokens::TokType::KW, 2}}, {"char", {ctokens::TokType::KW, 3}}, { "void", {ctokens::TokType::KW, 4}},
-                                                {"return", {ctokens::TokType::KW, 5}}, {"const", {ctokens::TokType::KW, 6}}, {"main", {ctokens::TokType::KW, 7}},
-                                                {"struct", {ctokens::TokType::KW, 8}}, {"union", {ctokens::TokType::KW, 9}}, {"switch", {ctokens::TokType::KW, 10}}};
+    std::unordered_map<std::string, std::pair<TokType, int>> keywords = {{"int", {TokType::KW, 1}}, {"float", {TokType::KW, 2}}, {"char", {TokType::KW, 3}}, { "void", {TokType::KW, 4}},
+                                                {"return", {TokType::KW, 5}}, {"const", {TokType::KW, 6}}, {"main", {TokType::KW, 7}},
+                                                {"struct", {TokType::KW, 8}}, {"union", {TokType::KW, 9}}, {"switch", {TokType::KW, 10}}, {"case", {TokType::KW, 11}}, 
+                                                {"break", {TokType::KW, 12}}, {"default", {TokType::KW, 13}}};
 
-    std::unordered_map<std::string, std::pair<ctokens::TokType, int>> operators = {{"!", {ctokens::TokType::OP, 11}}, {"+", {ctokens::TokType::OP, 12}}, {"-", {ctokens::TokType::OP, 13}}, {"*", {ctokens::TokType::OP, 14}}, {"/", {ctokens::TokType::OP, 15}},
-                                                {"%", {ctokens::TokType::OP, 16}}, {"=", {ctokens::TokType::OP, 17}}, {">", {ctokens::TokType::OP, 18}}, {"<", {ctokens::TokType::OP, 19}}, 
-                                                {"==", {ctokens::TokType::OP, 20}}, {"<=", {ctokens::TokType::OP, 21}}, {">=", {ctokens::TokType::OP, 22}}, {"!=", {ctokens::TokType::OP, 23}},
-                                                 {"&&", {ctokens::TokType::OP, 24}}, {"||", {ctokens::TokType::OP, 25}}};
+    std::unordered_map<std::string, std::pair<TokType, int>> operators = {{"!", {TokType::OP, 14}}, {"+", {TokType::OP, 15}}, {"-", {TokType::OP, 16}}, {"*", {TokType::OP, 17}}, {"/", {TokType::OP, 18}},
+                                                {"%", {TokType::OP, 19}}, {"=", {TokType::OP, 20}}, {">", {TokType::OP, 21}}, {"<", {TokType::OP, 22}}, 
+                                                {"==", {TokType::OP, 23}}, {"<=", {TokType::OP, 24}}, {">=", {TokType::OP, 25}}, {"!=", {TokType::OP, 26}},
+                                                 {"&&", {TokType::OP, 27}}, {"||", {TokType::OP, 28}}, {":", {TokType::OP, 29}}};
     
-    std::unordered_map<std::string, std::pair<ctokens::TokType, int>> ses = {{"(", {ctokens::TokType::SE, 26}}, {")", {ctokens::TokType::SE, 27}}, {"{", {ctokens::TokType::SE, 28}}, {"}", {ctokens::TokType::SE, 29}}, 
-                                                {";", {ctokens::TokType::SE, 30}}, {",", {ctokens::TokType::SE, 31}}};
+    std::unordered_map<std::string, std::pair<TokType, int>> ses = {{"(", {TokType::SE, 30}}, {")", {TokType::SE, 31}}, {"{", {TokType::SE, 32}}, {"}", {TokType::SE, 33}}, 
+                                                {";", {TokType::SE, 34}}, {",", {TokType::SE, 35}}};
 } // ctokens

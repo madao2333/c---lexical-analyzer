@@ -8,19 +8,29 @@ using namespace std;
 int main()
 {
     string input = R"(
-        // Test
-        int a = 10; 
-        int main(){ 
-            a=10; 
-            return 0; 
-        }
+        int main() { 
+            int x = 2; 
+            int y = 3; 
+            switch (x) { 
+                case 1: { 
+                y = 10;  // 简单语句 
+                break; 
+                } 
+                case 2: { 
+                y = 20;     
+                // 简单赋值语句 
+                func(y);      
+                break; 
+                } 
+                default: {       
+                return 0;    
+                } 
+            } 
+        } 
     )";
 
     Lexer h(input);
     h.tokenize();
-    for(auto a : h.getTokens())
-    {
-        cout << a;
-    }
+    cout << h;
 
 }
