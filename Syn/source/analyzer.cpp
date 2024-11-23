@@ -126,10 +126,8 @@ void analyzer::print()
         vn.print();
     }
 }
-
-map<string, set<string>> FIRST;
-void analyzer::toFirst()
-{
+    map<string, set<string> >FIRST;
+void analyzer::toFirst() {
     map<string, int> vis;
     map<string, int> getans;
 
