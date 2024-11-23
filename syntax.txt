@@ -25,8 +25,7 @@ bType -> char
 bType -> struct Ident
 bType -> union Ident
 structDef -> struct Ident { structBlockElem } structVars ;
-strctVars -> Ident argStructS
-structVars-> $
+structVars -> Ident argStructSstructVars-> $
 argStructS -> , Ident argStructS 
 argStructS -> $
 unionDef -> union Ident { unionBlockElem } unionVars ;
