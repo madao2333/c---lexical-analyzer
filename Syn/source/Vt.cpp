@@ -20,9 +20,9 @@ bool Vt::isVt(const std::string &str) {
 Vt::Vt(std::string lexeme) : V(lexeme) {}
 
 // 添加epsilon到vars集合中
-std::unordered_set<std::string> Vt::vars = {"$", "Ident", "number", "CHAR", "INT", "FLOAT", "ε"}; // ε是epsilon的希腊字母表示
+std::unordered_set<std::string> Vt::vars = {"$", "Ident", "number", "CHAR", "INT", "FLOAT"}; 
 
 // 实现epsilon静态成员函数
 Vt Vt::epsilon() {
-    return Vt("ε");
+    return Vt("$");
 }

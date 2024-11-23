@@ -91,68 +91,24 @@ void analyzer::print() {
 void analyzer::toFirst() {
     std::unordered_map<V, std::unordered_set<V>> FIRST;
     bool changed = true;
-
-    while (changed) {
-        changed = false;
-        for (auto& vt : vtVec) {
+    for (auto& vt : vtVec) {
             if (FIRST[vt].empty()) {
                 FIRST[vt].insert(vt);
                 changed = true;
             }
-        }
-
-        for (auto& vn : vnVec) {
-            for (auto& rule : vn.getRules()) {
-                for (size_t i = 0; i < rule.size(); ++i) {
-                    auto& symbol = rule[i];
-                    if (Vt::isVt(symbol.getLexeme())) {
-                        Vt vt = Vt(symbol.getLexeme());
-                        if (vt != Vt::epsilon() && FIRST[vn].find(vt) == FIRST[vn].end()) {
-                            FIRST[vn].insert(vt);
-                            changed = true;
-                        }
-                    } else {
-                        auto& firstY = FIRST[symbol];
-                        for (auto& y : firstY) {
-                            if (y != Vt::epsilon()) {
-                                if (FIRST[vn].find(y) == FIRST[vn].end()) {
-                                    FIRST[vn].insert(y);
-                                    changed = true;
-                                }
-                            }
-                        }
-
-                        if (firstY.find(Vt::epsilon()) != firstY.end()) {
-                            bool canDeriveEpsilon = true;
-                            for (size_t j = 0; j < rule.size(); ++j) {
-                                if (j < rule.size() - 1) {
-                                    auto& firstNext = FIRST[rule[j]];
-                                    if (firstNext.find(Vt::epsilon()) == firstNext.end()) {
-                                        canDeriveEpsilon = false;
-                                        break;
-                                    }
-                                } else if (j == rule.size() - 1) {
-                                    canDeriveEpsilon = true;
-                                }
-                            }
-
-                            if (canDeriveEpsilon && FIRST[vn].find(Vt::epsilon()) == FIRST[vn].end()) {
-                                FIRST[vn].insert(Vt::epsilon());
-                                changed = true;
-                            }
-                        }
+        }//将vt的加入first
+    while (changed) {
+        changed = false;
+        for(auto& vn : vnVec){
+            for(auto& right : vn.getRules()){
+                for(int i=0;i<right.size();i++){
+                    V vnr=right[i];
+                    if(Vt::isVt(vnr.getLexeme())){
+                        FIRST[vn].insert(vnr);
                     }
                 }
             }
         }
-    }
-
-    // 打印FIRST集合
-    for (auto& vn : vnVec) {
-        std::cout << "FIRST(" << vn.getLexeme() << ") = {";
-        for (auto& v : FIRST[vn]) {
-            std::cout << v.getLexeme() << " ";
-        }
-        std::cout << "}\n";
-    }
 }
+
+
