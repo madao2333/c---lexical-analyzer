@@ -81,7 +81,7 @@ void Lexer::advance() {
     char currentChar = input[pos];
     char nextChar = (pos < input.length() - 1) ? input[pos + 1] : ' ';
 
-    if (isdigit(currentChar)) {
+    if (isdigit(currentChar) or currentChar=='.') {
         this->extractNum();
         return;
     }
@@ -137,6 +137,7 @@ void Lexer::advance() {
                 this->extractWord();
             } else if (isArithOp(currentChar)) {
                 this->tokens.emplace_back(Token(std::string("") + currentChar, scan(ctokens::operators, std::string("") + currentChar)->second));
+                this->pos++;
             } else if (currentChar == '&' || currentChar == '|' || currentChar == '!') {
                 std::string logOp(1, currentChar);
                 this->pos++;
@@ -153,7 +154,10 @@ void Lexer::advance() {
                     if (logOp != "||" and logOp != "&&") {
                         logOp.pop_back(); // Remove redundant character if present
                     }
-
+                    if(scan(ctokens::operators, logOp)==NULL){
+                        tokens.emplace_back(Token(logOp, ctokens::TokType::INVALID_TOK));
+                    }
+                    else 
                     this->tokens.emplace_back(Token(logOp, scan(ctokens::operators, logOp)->second));
                 }
             } else {
@@ -200,21 +204,38 @@ bool Lexer::isSE(const char &currentChar) {
 void Lexer::extractNum() {
     std::string constant;
 
-    while (pos < input.length()  and
-           (this->input[pos] not_eq ';' and this->input[pos] not_eq ',')) {
-        if (isdigit(input[pos]) or input[pos] == '.') {
-            constant += input[pos];
-        } else {
-            while (pos < input.length() && !isspace(input[pos]) && input[pos] != ';') {
-                constant += input[pos];
-                pos++;
-            }
-            tokens.emplace_back(Token(constant, ctokens::TokType::INVALID_TOK));
-            return;
-        }
+    // while (pos < input.length()  and
+    //        (this->input[pos] not_eq ';' and this->input[pos] not_eq ',')) {
+    //     if (isdigit(input[pos]) or input[pos] == '.') {
+    //         constant += input[pos];
+    //     } else {
+    //         while (pos < input.length() && !isspace(input[pos]) && input[pos] != ';') {
+    //             constant += input[pos];
+    //             pos++;
+    //         }
+    //         tokens.emplace_back(Token(constant, ctokens::TokType::INVALID_TOK));
+    //         return;
+    //     }
+    //     pos++;
+    // }
+
+    // 提取连续的数字或小数点
+    while (pos < input.length() && (isdigit(this->input[pos]) || this->input[pos] == '.')) {
+        constant += input[pos];
         pos++;
     }
 
+    // 检查数字后的字符是否合法
+    if (pos < input.length() && (isalpha(input[pos]) || input[pos] == '_')) {
+        // 如果数字后接字母或下划线，标记为非法 token
+        while (pos < input.length() && !isspace(input[pos]) && input[pos] != ';') {
+            constant += input[pos];
+            pos++;
+        }
+        tokens.emplace_back(Token(constant, ctokens::TokType::INVALID_TOK));
+        return;
+    }
+    
     ctokens::TokType numType;
 
     switch (isFloat(constant)) {
@@ -231,7 +252,6 @@ void Lexer::extractNum() {
 
     if (numType == ctokens::TokType::INVALID_TOK) {
         tokens.emplace_back(Token(constant, numType));
-        pos++;
         return;
     }
 

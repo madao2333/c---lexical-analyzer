@@ -45,6 +45,6 @@ std::string Token::print() const {
 }
 
 std::ostream &operator<<(std::ostream &os, const Token &token) {
-    os << token.getLexeme() << " " << token.print() << "\n";
+    os << token.getLexeme() << "\t" << token.print() << "\n";
     return os;
 }
