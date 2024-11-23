@@ -54,6 +54,9 @@ void analyzer::readSyntax() {
     std::ifstream infile;
     infile.open("../syntax.txt", std::ios::in);
     if (!infile.is_open()) {
+        infile.open("syntax.txt", std::ios::in);
+    }
+    if (!infile.is_open()) {
         std::cout << "读取失败" << "\n";
         return;
     }
