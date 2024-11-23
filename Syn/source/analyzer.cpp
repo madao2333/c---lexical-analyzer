@@ -1,12 +1,4 @@
-#include <algorithm>
-#include <functional>
-#include <ranges>
-#include <cctype>
-#include <cstddef>
-#include <fstream>
-#include <ios>
-#include <string>
-#include <vector>
+#include <bits/stdc++.h>
 
 #include "../include/analyzer.h"
 //除去空白字符
@@ -49,12 +41,13 @@ std::vector<V> analyzer::turnStringVecToVvec(std::vector<std::string> stringVec)
     }
     return res;
 };
-
+using namespace std;
+set<string> setVt;
 void analyzer::readSyntax() {
     std::ifstream infile;
-    infile.open("../syntax.txt", std::ios::in);
+    infile.open("../syntes.txt", std::ios::in);
     if (!infile.is_open()) {
-        infile.open("syntax.txt", std::ios::in);
+        infile.open("syntes.txt", std::ios::in);
     }
     if (!infile.is_open()) {
         std::cout << "读取失败" << "\n";
@@ -68,6 +61,7 @@ void analyzer::readSyntax() {
         left = trim(left);
         right = trim(right);
         int find = -1;
+        for(auto p:turnStringVecToVvec(split(right, ' ')))setVt.insert(p.getLexeme());  
         for (auto& vn : vnVec) {
             if (vn.getLexeme() == left) {
                 vn.addRights(turnStringVecToVvec(split(right, ' ')));
@@ -80,6 +74,12 @@ void analyzer::readSyntax() {
             vnVec.push_back(newVn);
         }
     }
+    for (auto vn : vnVec) {
+        setVt.erase(vn.getLexeme());
+    }
+    for(auto p:setVt){
+        vtVec.push_back(Vt(p));
+    }
 }
 using namespace std;
 void analyzer::print() {
@@ -89,70 +89,57 @@ void analyzer::print() {
 }
 
 void analyzer::toFirst() {
-    std::unordered_map<V, std::unordered_set<V>> FIRST;
-    bool changed = true;
-
-    while (changed) {
-        changed = false;
-        for (auto& vt : vtVec) {
-            if (FIRST[vt].empty()) {
-                FIRST[vt].insert(vt);
-                changed = true;
-            }
+    map<string, int> vis;
+    map<string, int> getans;
+    map<string, set<string>> FIRST;
+    map<string, int> cntnull;
+    function<void(string)> dfs = [&](string now)
+    {
+        if(getans.count(now))return;
+        if(vis[now]&&(!getans.count(now))){
+            cout << "There exists left recursion :"+now << endl;
+            assert(0);
         }
-
-        for (auto& vn : vnVec) {
-            for (auto& rule : vn.getRules()) {
-                for (size_t i = 0; i < rule.size(); ++i) {
-                    auto& symbol = rule[i];
-                    if (Vt::isVt(symbol.getLexeme())) {
-                        Vt vt = Vt(symbol.getLexeme());
-                        if (vt != Vt::epsilon() && FIRST[vn].find(vt) == FIRST[vn].end()) {
-                            FIRST[vn].insert(vt);
-                            changed = true;
+        vis[now]++;
+        if(setVt.count(now)){
+            if(now!="$")
+            FIRST[now].insert(now);
+            getans[now]++;
+            if(now=="$")
+                cntnull[now] = 1;
+            return;
+        }
+        for(auto u:vnVec){
+            if(u.getLexeme()==now){
+                for(auto vec:u.getRules()){
+                    int flag = 1;
+                    for(auto nxt:vec){
+                        dfs(nxt.getLexeme());
+                        if(flag){
+                            for(auto sonFirst:FIRST[nxt.getLexeme()])
+                            FIRST[now].insert(sonFirst);
                         }
-                    } else {
-                        auto& firstY = FIRST[symbol];
-                        for (auto& y : firstY) {
-                            if (y != Vt::epsilon()) {
-                                if (FIRST[vn].find(y) == FIRST[vn].end()) {
-                                    FIRST[vn].insert(y);
-                                    changed = true;
-                                }
-                            }
-                        }
-
-                        if (firstY.find(Vt::epsilon()) != firstY.end()) {
-                            bool canDeriveEpsilon = true;
-                            for (size_t j = 0; j < rule.size(); ++j) {
-                                if (j < rule.size() - 1) {
-                                    auto& firstNext = FIRST[rule[j]];
-                                    if (firstNext.find(Vt::epsilon()) == firstNext.end()) {
-                                        canDeriveEpsilon = false;
-                                        break;
-                                    }
-                                } else if (j == rule.size() - 1) {
-                                    canDeriveEpsilon = true;
-                                }
-                            }
-
-                            if (canDeriveEpsilon && FIRST[vn].find(Vt::epsilon()) == FIRST[vn].end()) {
-                                FIRST[vn].insert(Vt::epsilon());
-                                changed = true;
-                            }
-                        }
+                        if(!cntnull[nxt.getLexeme()])flag=0;
+                        if(flag==0)break;
                     }
+                    if(flag==1)
+                        cntnull[now] = 1;
                 }
             }
         }
-    }
+        getans[now]++;
+    };
+    for(auto v:vnVec)dfs(v.getLexeme());
+    for(auto v:vtVec)dfs(v.getLexeme());
 
-    // 打印FIRST集合
-    for (auto& vn : vnVec) {
-        std::cout << "FIRST(" << vn.getLexeme() << ") = {";
-        for (auto& v : FIRST[vn]) {
-            std::cout << v.getLexeme() << " ";
+    FIRST.erase("$");
+    cout << FIRST.size() << endl;
+    for(auto [now,v]:FIRST){
+        cout << now << ":";
+        if(cntnull[now])cout<<" $";
+        for(auto str:v){
+            cout << " " << str;
         }
-        std::cout << "}\n";
+        cout << endl;
     }
 }

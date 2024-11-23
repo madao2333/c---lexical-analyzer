@@ -11,7 +11,7 @@ void Vn::addRights(std::vector<V> right) {
 Vn::Vn(std::string lexeme) : V(lexeme) {}
 
 void Vn::print() {
-    std::cout << this->getLexeme()<<":\n" << "\n";
+    std::cout << this->getLexeme()<<":\n";
     for (auto& right : rights) {
         std::cout << "\t";
         for (auto& v : right) {
