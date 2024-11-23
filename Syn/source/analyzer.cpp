@@ -258,8 +258,8 @@ void analyzer::toFollow()
                 }
             }
         }
-        // 输出 FOLLOW 集
-        cout << "FOLLOW 集：" << endl;
+        // 输出 FOLLOW 
+        cout << "FOLLOW ：" << endl;
         for (auto &[nonTerminal, followSet] : FOLLOW)
         {
             cout << nonTerminal << ": ";
