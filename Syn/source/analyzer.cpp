@@ -81,9 +81,14 @@ void analyzer::readSyntax() {
         }
     }
 }
-
+using namespace std;
 void analyzer::print() {
     for (auto& vn : vnVec) {
         vn.print();
+    }
+    cout << vnVec.size() << endl;
+    cout << vtVec.size() << endl;
+    for (auto& vt : vtVec) {
+        std::cout << vt.getLexeme() << std::endl;
     }
 }
