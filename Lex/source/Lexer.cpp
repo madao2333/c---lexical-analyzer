@@ -161,7 +161,12 @@ void Lexer::advance() {
                     this->tokens.emplace_back(Token(logOp, scan(ctokens::operators, logOp)->second));
                 }
             } else {
-                this->tokens.emplace_back(Token(std::string("") + currentChar, ctokens::TokType::INVALID_TOK));
+                std::string logOp(1, currentChar);
+                if(scan(ctokens::operators, logOp)==NULL){
+                        tokens.emplace_back(Token(logOp, ctokens::TokType::INVALID_TOK));
+                }
+                else 
+                this->tokens.emplace_back(Token(logOp, scan(ctokens::operators, logOp)->second));
                 this->pos++;
             }
         }

@@ -12,8 +12,12 @@ using namespace std;
 
 int main()
 {
-    string filePath = "C:\\Gtt\\c---lexical-analyzer\\now.txt";
+    string filePath = "now.txt";
     ifstream file(filePath);
+    if (!file.is_open()) {
+        ifstream file2("../now.txt");
+        swap(file, file2);
+    }
     if (!file.is_open()) {
         cerr << "Error: Unable to open file " << filePath << endl;
         return 1;
