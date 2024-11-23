@@ -29,16 +29,16 @@ strctVars -> Ident argStructS
 structVars-> $
 argStructS -> , Ident argStructS 
 argStructS -> $
-unionDef -> union Ident { unionBlockElem } unionVars;
+unionDef -> union Ident { unionBlockElem } unionVars ;
 unionVars -> Ident argUnionU
 unionVars -> $
 argUnionU -> , Ident argUnionU
 argUnionU -> $
 switchDef -> switch ( eqExp ) { switchBlock }
-switchBlock -> case const_expr: { switchBlockItem } switchBlock
-switchBlock -> default: { switchBlockItem }
+switchBlock -> case const_expr : { switchBlockItem } switchBlock
+switchBlock -> default : { switchBlockItem }
 switchBlockElem -> blockItem breakStmt blockItem
-breakStmt -> break;
+breakStmt -> break ;
 breakStmt -> $
 const_expr -> number
 const_expr -> CHAR
@@ -104,3 +104,4 @@ assignExp -> eqExp assignExpAtom
 assignExpAtom -> = eqExp assignExpAtom 
 assignExpAtom -> $ 
 constExp -> assignExp
+

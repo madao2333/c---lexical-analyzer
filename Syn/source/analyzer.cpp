@@ -33,7 +33,7 @@ std::vector<V> analyzer::turnStringVecToVvec(std::vector<std::string> stringVec)
     std::vector<V> res;
     for (std::string str : stringVec) {
         int find = -1;
-        for (auto& vn : vnSet) {
+        for (auto& vn : vnVec) {
             if (vn.getLexeme() == str) {
                 res.push_back(vn);
                 find = 0;
@@ -41,10 +41,13 @@ std::vector<V> analyzer::turnStringVecToVvec(std::vector<std::string> stringVec)
         }
         if (find == -1) {
             if (Vt::isVt(str) == true) {
-
+               res.push_back(Vt(str));
+            } else {
+                res.push_back(Vn(str));
             }
         }
-    } 
+    }
+    return res;
 };
 
 void analyzer::readSyntax() {
@@ -52,6 +55,7 @@ void analyzer::readSyntax() {
     infile.open("../syntax.txt", std::ios::in);
     if (!infile.is_open()) {
         std::cout << "读取失败" << "\n";
+        return;
     }
     std::string buf;
     while (std::getline(infile, buf)) {
@@ -60,13 +64,23 @@ void analyzer::readSyntax() {
         std::string right = buf.substr(pos + 2);
         left = trim(left);
         right = trim(right);
-        std::vector<std::string> rightVec = split(right, ' ');
-
-        for (auto& vn : vnSet) {
-            int find = -1;
+        int find = -1;
+        for (auto& vn : vnVec) {
             if (vn.getLexeme() == left) {
-                
+                vn.addRights(turnStringVecToVvec(split(right, ' ')));
+                find = 0; 
             }
         }
+        if (find == -1) {
+            Vn newVn =  Vn(left);
+            newVn.addRights(turnStringVecToVvec(split(right, ' ')));
+            vnVec.push_back(newVn);
+        }
+    }
+}
+
+void analyzer::print() {
+    for (auto& vn : vnVec) {
+        vn.print();
     }
 }

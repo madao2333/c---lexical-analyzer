@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <filesystem>
 #include "Lex/include/Lexer.h"
+#include "Syn/include/analyzer.h"
 #include "Lex/include/Preprocessor.h"
 using namespace std;
 
@@ -23,4 +24,8 @@ int main()
     Lexer h(input);
     h.tokenize();
     cout << h;
+
+    analyzer a;
+    a.readSyntax();
+    a.print();
 }

@@ -3,12 +3,16 @@
 #define UNTITLED1_VN_H
 
 #include "V.h"
-#include <set>
+#include "vector_hash.h"
+#include <string>
+#include <unordered_set>
 #include <vector>
 class Vn : public V {
     private:
-        std::set<std::vector<V>> rights;
+        std::unordered_set<std::vector<V>, VectorHash> rights;
     public:
+        Vn(std::string lexeme);
+        void print();
         void addRights(std::vector<V> right);
 };
 
