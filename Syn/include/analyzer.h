@@ -7,7 +7,9 @@
 #include "Vt.h"
 #include <string>
 #include <vector>
-
+#include <map>
+#include <set>
+using namespace std;
 class analyzer {
     private:
         std::vector<Vn> vnVec;

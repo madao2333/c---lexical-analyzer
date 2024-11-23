@@ -1,7 +1,0 @@
-# ninja log v6
-33	496	7540540007564902	CMakeFiles/untitled1.dir/Lex/source/Preprocessor.cpp.obj	1eb3ff69f6d6271c
-26	943	7540540007505011	CMakeFiles/untitled1.dir/Lex/source/Lexer.cpp.obj	523ffd6a9a80109c
-943	1130	7540540016671035	untitled1.exe	c426c3281feda209
-12	590	7540540007365028	CMakeFiles/untitled1.dir/Lex/source/TokenList.cpp.obj	789918f17fa11dd1
-19	588	7540540007434909	CMakeFiles/untitled1.dir/Lex/source/Token.cpp.obj	3acc91f385a0abde
-4	918	7540540007284963	CMakeFiles/untitled1.dir/main.cpp.obj	6ecc764698ecd785

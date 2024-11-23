@@ -81,17 +81,15 @@ void analyzer::readSyntax() {
         vtVec.push_back(Vt(p));
     }
 }
-using namespace std;
 void analyzer::print() {
     for (auto& vn : vnVec) {
         vn.print();
     }
 }
-
 void analyzer::toFirst() {
     map<string, int> vis;
     map<string, int> getans;
-    map<string, set<string>> FIRST;
+    map<string, set<string> >FIRST;
     map<string, int> cntnull;
     function<void(string)> dfs = [&](string now)
     {
