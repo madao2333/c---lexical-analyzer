@@ -14,6 +14,9 @@ class Vn : public V {
         Vn(std::string lexeme);
         void print();
         void addRights(std::vector<V> right);
+        std::unordered_set<std::vector<V>, VectorHash>& getRules() {
+        return rights;
+    }
 };
 
 #endif

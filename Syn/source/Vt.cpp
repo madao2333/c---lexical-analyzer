@@ -14,14 +14,15 @@ bool isVt_helper(const std::string &str,
 }
 
 bool Vt::isVt(const std::string &str) {
-    auto isVars = [](std::string str, std::unordered_set<std::string> vars) -> bool {
-        for (const auto& p : vars) 
-            if (p == str) return true;
-        return false;
-    };
-    return isVars(str, vars) or isVt_helper(str, ctokens::keywords) or isVt_helper(str, ctokens::operators) or isVt_helper(str, ctokens::ses); 
-};
+    return vars.find(str) != vars.end(); // 简化函数，直接检查vars集合
+}
 
 Vt::Vt(std::string lexeme) : V(lexeme) {}
 
-std::unordered_set<std::string> Vt::vars = {"$", "Ident", "number", "CHAR", "INT", "FLOAT"};
+// 添加epsilon到vars集合中
+std::unordered_set<std::string> Vt::vars = {"$", "Ident", "number", "CHAR", "INT", "FLOAT", "ε"}; // ε是epsilon的希腊字母表示
+
+// 实现epsilon静态成员函数
+Vt Vt::epsilon() {
+    return Vt("ε");
+}

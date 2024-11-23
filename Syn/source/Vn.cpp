@@ -6,6 +6,8 @@ void Vn::addRights(std::vector<V> right) {
     rights.insert(right);
 };
 
+
+
 Vn::Vn(std::string lexeme) : V(lexeme) {}
 
 void Vn::print() {

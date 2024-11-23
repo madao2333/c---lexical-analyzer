@@ -19,7 +19,7 @@ int main()
         swap(file, file2);
     }
     if (!file.is_open()) {
-        cerr << "Error: Unable to open file " << filePath << endl;
+        cerr << "Error: Unable to open file " << filePath << endl;     
         return 1;
     }
     stringstream buffer;
@@ -31,5 +31,6 @@ int main()
 
     analyzer a;
     a.readSyntax();
+    a.toFirst();
     a.print();
 }

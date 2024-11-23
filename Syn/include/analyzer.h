@@ -15,6 +15,7 @@ class analyzer {
     public:
         void print();
         void readSyntax();
+        void toFirst();
     private:
         std::vector<V> turnStringVecToVvec(std::vector<std::string> stringVec);
 };
