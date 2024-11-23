@@ -15,6 +15,7 @@ class Vt : public V {
       Vt() = default;
       Vt(std::string lexeme);
       static bool isVt(const std::string & str);
+      static Vt epsilon(); // 添加一个静态成员函数返回epsilon的Vt实例
 };
 
 #endif
