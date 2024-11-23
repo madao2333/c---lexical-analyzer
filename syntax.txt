@@ -25,18 +25,22 @@ bType -> char
 bType -> struct Ident
 bType -> union Ident
 structDef -> struct Ident { structBlockElem } structVars ;
-structVars -> Ident argStructSstructVars-> $
+structVars -> Ident argStructS
+structVars-> $
 argStructS -> , Ident argStructS 
 argStructS -> $
 unionDef -> union Ident { unionBlockElem } unionVars ;
+unionBlockElem -> decl unionBlockElem
 unionVars -> Ident argUnionU
 unionVars -> $
 argUnionU -> , Ident argUnionU
 argUnionU -> $
 switchDef -> switch ( eqExp ) { switchBlock }
-switchBlock -> case const_expr : { switchBlockItem } switchBlock
-switchBlock -> default : { switchBlockItem }
+switchBlock -> case const_expr : { switchBlockElem } switchBlock
+switchBlock -> default : { switchBlockElem } switchBlock
+switchBlock -> $
 switchBlockElem -> blockItem breakStmt blockItem
+switchBlockElem -> $
 breakStmt -> break ;
 breakStmt -> $
 const_expr -> number
@@ -52,9 +56,9 @@ block -> { blockItem }
 blockItem -> decl blockItem 
 blockItem -> stmt blockItem 
 blockItem -> $ 
-structBlockItem -> decl structBlockItem 
-structBlockItem -> funcDef sructBlockItem
-structBlockItem -> $
+structBlockElem -> decl structBlockElem 
+structBlockElem -> funcDef structBlockElem 
+structBlockElem -> $
 stmt -> exp ; 
 stmt -> ; 
 stmt -> block 
