@@ -1,3 +1,0 @@
-C:/Gtt/c---lexical-analyzer/build/CMakeFiles/untitled1.dir
-C:/Gtt/c---lexical-analyzer/build/CMakeFiles/edit_cache.dir
-C:/Gtt/c---lexical-analyzer/build/CMakeFiles/rebuild_cache.dir
