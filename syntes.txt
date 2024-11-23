@@ -1,0 +1,106 @@
+program -> compUnit 
+compUnit -> decl compUnit 
+compUnit -> funcDef compUnit 
+compUnit -> structDef compUnit
+compUnit -> unionDef compUnit
+compUnit -> switchDef compUnit
+compUnit -> $ 
+decl -> constDecl 
+decl -> varDecl 
+constDecl -> const bType constDef argConst ; 
+argConst -> , constDef argConst 
+argConst -> $
+constDef -> Ident = constInitVal 
+constInitVal -> constExp 
+varDecl -> bType varDef argVarDecl ; 
+argVarDecl -> , varDef argVarDecl 
+argVarDecl -> $ 
+varDef -> Ident argVarDef 
+argVarDef -> = initVal 
+argVarDef -> $ 
+initVal -> exp 
+bType -> int 
+bType -> float 
+bType -> char 
+bType -> struct Ident
+bType -> union Ident
+structDef -> struct Ident { structBlockElem } structVars ;
+structVars -> Ident argStructS
+structVars-> $
+argStructS -> , Ident argStructS 
+argStructS -> $
+unionDef -> union Ident { unionBlockElem } unionVars ;
+unionVars -> Ident argUnionU
+unionVars -> $
+argUnionU -> , Ident argUnionU
+argUnionU -> $
+switchDef -> switch ( eqExp ) { switchBlock }
+switchBlock -> case const_expr : { switchBlockItem } switchBlock
+switchBlock -> default : { switchBlockItem }
+switchBlockElem -> blockItem breakStmt blockItem
+breakStmt -> break ;
+breakStmt -> $
+const_expr -> number
+const_expr -> CHAR
+funcDef -> funcType Ident ( funcFParams ) block 
+funcType -> void 
+funcFParams -> funcFParam argFunctionF 
+funcFParams -> $ 
+argFunctionF -> , funcFParam argFunctionF 
+argFunctionF -> $ 
+funcFParam -> bType Ident 
+block -> { blockItem } 
+blockItem -> decl blockItem 
+blockItem -> stmt blockItem 
+blockItem -> $ 
+structBlockItem -> decl structBlockItem 
+structBlockItem -> funcDef sructBlockItem
+structBlockItem -> $
+stmt -> exp ; 
+stmt -> ; 
+stmt -> block 
+stmt -> return argExp ; 
+argExp -> $ 
+argExp -> exp 
+exp -> assignExp 
+lVal -> Ident 
+primaryExp -> ( exp ) 
+primaryExp -> number 
+number -> INT 
+number -> FLOAT
+unaryOp -> + 
+unaryOp -> - 
+unaryOp -> ! 
+unaryExp -> unaryOp unaryExp 
+unaryExp -> Ident callFunc 
+callFunc -> ( funcRParams ) 
+callFunc -> $ 
+unaryExp -> primaryExp 
+funcRParams -> funcRParam argFunctionR 
+funcRParams -> $
+argFunctionR -> , funcRParam argFunctionR 
+argFunctionR -> $ 
+funcRParam -> exp 
+mulExp -> unaryExp mulExpAtom 
+mulExpAtom -> * unaryExp mulExpAtom 
+mulExpAtom -> / unaryExp mulExpAtom 
+mulExpAtom -> % unaryExp mulExpAtom 
+mulExpAtom -> $ 
+addExp -> mulExp addExpAtom 
+addExpAtom -> + mulExp addExpAtom 
+addExpAtom -> - mulExp addExpAtom 
+addExpAtom -> $ 
+relExp -> addExp relExpAtom 
+relExpAtom -> < addExp relExpAtom 
+relExpAtom -> > addExp relExpAtom 
+relExpAtom -> <= addExp relExpAtom 
+relExpAtom -> >= addExp relExpAtom 
+relExpAtom -> $ 
+eqExp -> relExp eqExpAtom 
+eqExpAtom -> == relExp eqExpAtom 
+eqExpAtom -> != relExp eqExpAtom 
+eqExpAtom -> $ 
+assignExp -> eqExp assignExpAtom 
+assignExpAtom -> = eqExp assignExpAtom 
+assignExpAtom -> $ 
+constExp -> assignExp

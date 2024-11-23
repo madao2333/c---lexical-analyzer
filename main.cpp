@@ -12,7 +12,7 @@ using namespace std;
 
 int main()
 {
-  /*   string filePath = "now.txt";
+     string filePath = "now.txt";
      ifstream file(filePath);
      if (!file.is_open()) {
          ifstream file2("../now.txt");
@@ -27,10 +27,11 @@ int main()
      string input = buffer.str();
      Lexer h(input);
      h.tokenize();
-     cout << h;*/
+     cout << h;
 
     analyzer a;
     a.readSyntax();
+    // a.print();
     a.toFirst();
-    //a.print();
+    a.toFollow();
 }
