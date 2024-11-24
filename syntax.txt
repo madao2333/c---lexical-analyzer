@@ -8,8 +8,6 @@ decl -> varDecl
 decl -> varDeclAndstructDef
 decl -> varDeclAndunionDef
 constDecl -> const bType constDef argConst ; 
-constDecl -> const struct Ident constDef argConst ;
-constDecl -> const union Ident constDef argConst ;
 argConst -> , constDef argConst 
 argConst -> $
 constDef -> Ident = constInitVal 
@@ -35,6 +33,8 @@ structVars-> $
 argStructS -> , Ident argStructS 
 argStructS -> $
 unionBlockElem -> decl unionBlockElem
+unionBlockElem -> funcDef unionBlockElem
+unionBlockElem -> $
 unionVars -> Ident argUnionU
 unionVars -> $
 argUnionU -> , Ident argUnionU
@@ -51,6 +51,9 @@ const_expr -> number
 const_expr -> CHAR
 funcDef -> funcType Ident ( funcFParams ) block 
 funcType -> void 
+funcType -> int
+funcType -> float
+funcType -> char
 funcFParams -> funcFParam argFunctionF 
 funcFParams -> $ 
 argFunctionF -> , funcFParam argFunctionF 
@@ -61,6 +64,7 @@ funcFParam -> union Ident Ident
 block -> { blockItem } 
 blockItem -> decl blockItem 
 blockItem -> stmt blockItem 
+blockItem -> switchDef blockItem 
 blockItem -> $ 
 structBlockElem -> decl structBlockElem 
 structBlockElem -> funcDef structBlockElem 

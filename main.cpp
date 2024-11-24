@@ -13,6 +13,7 @@ using namespace std;
 int main()
 {
     string filePath = "now.txt";
+    //	freopen("input.txt","r",stdin);
     ifstream file(filePath);
     if (!file.is_open()) {
         ifstream file2("../now.txt");

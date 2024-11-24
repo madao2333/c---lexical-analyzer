@@ -1,79 +1,119 @@
- program -> compUnit 
- compUnit -> decl compUnit 
- compUnit -> funcDef compUnit 
- compUnit -> $ 
- decl -> constDecl 
- decl -> varDecl 
- constDecl -> const bType constDef argConst ; 
- argConst -> , constDef argConst 
- argConst -> $ 
- constDef -> Ident = constInitVal 
- constInitVal -> constExp 
- varDecl -> bType varDef argVarDecl ; 
- argVarDecl -> , varDef argVarDecl 
- argVarDecl -> $ 
- varDef -> Ident argVarDef 
- argVarDef -> = initVal 
- argVarDef -> $ 
- initVal -> exp 
- bType -> int 
- bType -> float 
- bType -> char 
- funcDef -> funcType Ident ( funcFParams ) block 
- funcType -> void
- funcFParams -> funcFParam argFunctionF 
- funcFParams -> $ 
- argFunctionF -> , funcFParam argFunctionF 
- argFunctionF -> $ 
- funcFParam -> bType Ident 
- block -> { blockItem } 
- blockItem -> decl blockItem 
- blockItem -> stmt blockItem 
- blockItem -> $ 
- stmt -> exp ; 
- stmt -> ; 
- stmt -> block 
- stmt -> return argExp ; 
- argExp -> $ 
- argExp -> exp 
- exp -> assignExp 
- lVal -> Ident 
- primaryExp -> ( exp ) 
- primaryExp -> number 
- number -> INT 
- unaryOp -> + 
- unaryOp -> - 
- unaryOp -> ! 
- unaryExp -> unaryOp unaryExp 
- unaryExp -> Ident callFunc 
- callFunc -> ( funcRParams ) 
- callFunc -> $ 
- unaryExp -> primaryExp 
- funcRParams -> funcRParam argFunctionR 
- funcRParams -> $ 
- argFunctionR -> , funcRParam argFunctionR 
- argFunctionR -> $ 
- funcRParam -> exp 
- mulExp -> unaryExp mulExpAtom 
- mulExpAtom -> * unaryExp mulExpAtom 
- mulExpAtom -> / unaryExp mulExpAtom 
- mulExpAtom -> % unaryExp mulExpAtom 
- mulExpAtom -> $ 
- addExp -> mulExp addExpAtom 
- addExpAtom -> + mulExp addExpAtom 
- addExpAtom -> - mulExp addExpAtom 
- addExpAtom -> $ 
- relExp -> addExp relExpAtom 
- relExpAtom -> < addExp relExpAtom 
- relExpAtom -> > addExp relExpAtom 
- relExpAtom -> <= addExp relExpAtom 
- relExpAtom -> >= addExp relExpAtom 
- relExpAtom -> $ 
- eqExp -> relExp eqExpAtom 
- eqExpAtom -> == relExp eqExpAtom 
- eqExpAtom -> != relExp eqExpAtom 
- eqExpAtom -> $ 
- assignExp -> eqExp assignExpAtom 
- assignExpAtom -> = eqExp assignExpAtom 
- assignExpAtom -> $ 
- constExp -> assignExp
+program -> compUnit 
+compUnit -> decl compUnit 
+compUnit -> funcDef compUnit 
+compUnit -> switchDef compUnit
+compUnit -> $ 
+decl -> constDecl 
+decl -> varDecl 
+decl -> varDeclAndstructDef
+decl -> varDeclAndunionDef
+constDecl -> const bType constDef argConst ; 
+argConst -> , constDef argConst 
+argConst -> $
+constDef -> Ident = constInitVal 
+constInitVal -> constExp 
+varDecl -> bType varDef argVarDecl ;
+varDeclAndstructDef -> struct Ident tempForStruct
+varDeclAndunionDef -> union Ident tempForUnion
+tempForStruct -> varDef argVarDecl ;
+tempForStruct -> { structBlockElem } structVars ;
+tempForUnion -> varDef argVarDecl ;
+tempForUnion -> { unionBlockElem } unionVars ;
+argVarDecl -> , varDef argVarDecl 
+argVarDecl -> $ 
+varDef -> Ident argVarDef 
+argVarDef -> = initVal 
+argVarDef -> $ 
+initVal -> exp 
+bType -> int 
+bType -> float 
+bType -> char 
+structVars -> Ident argStructS
+structVars-> $
+argStructS -> , Ident argStructS 
+argStructS -> $
+unionBlockElem -> decl unionBlockElem
+unionBlockElem -> funcDef unionBlockElem
+unionBlockElem -> $
+unionVars -> Ident argUnionU
+unionVars -> $
+argUnionU -> , Ident argUnionU
+argUnionU -> $
+switchDef -> switch ( eqExp ) { switchBlock }
+switchBlock -> case const_expr : { switchBlockElem } switchBlock
+switchBlock -> default : { switchBlockElem } switchBlock
+switchBlock -> $
+switchBlockElem -> blockItem breakStmt blockItem
+switchBlockElem -> $
+breakStmt -> break ;
+breakStmt -> $
+const_expr -> number
+const_expr -> CHAR
+funcDef -> funcType Ident ( funcFParams ) block 
+funcType -> void 
+funcType -> int
+funcType -> float
+funcType -> char
+funcFParams -> funcFParam argFunctionF 
+funcFParams -> $ 
+argFunctionF -> , funcFParam argFunctionF 
+argFunctionF -> $ 
+funcFParam -> bType Ident 
+funcFParam -> struct Ident Ident
+funcFParam -> union Ident Ident
+block -> { blockItem } 
+blockItem -> decl blockItem 
+blockItem -> stmt blockItem 
+blockItem -> switchDef blockItem 
+blockItem -> $ 
+structBlockElem -> decl structBlockElem 
+structBlockElem -> funcDef structBlockElem 
+structBlockElem -> $
+stmt -> exp ; 
+stmt -> ; 
+stmt -> block 
+stmt -> return argExp ; 
+argExp -> $ 
+argExp -> exp 
+exp -> assignExp 
+lVal -> Ident 
+primaryExp -> ( exp ) 
+primaryExp -> number 
+number -> INT 
+number -> FLOAT
+unaryOp -> + 
+unaryOp -> - 
+unaryOp -> ! 
+unaryExp -> unaryOp unaryExp 
+unaryExp -> Ident callFunc 
+callFunc -> ( funcRParams ) 
+callFunc -> $ 
+unaryExp -> primaryExp 
+funcRParams -> funcRParam argFunctionR 
+funcRParams -> $
+argFunctionR -> , funcRParam argFunctionR 
+argFunctionR -> $ 
+funcRParam -> exp 
+mulExp -> unaryExp mulExpAtom 
+mulExpAtom -> * unaryExp mulExpAtom 
+mulExpAtom -> / unaryExp mulExpAtom 
+mulExpAtom -> % unaryExp mulExpAtom 
+mulExpAtom -> $ 
+addExp -> mulExp addExpAtom 
+addExpAtom -> + mulExp addExpAtom 
+addExpAtom -> - mulExp addExpAtom 
+addExpAtom -> $ 
+relExp -> addExp relExpAtom 
+relExpAtom -> < addExp relExpAtom 
+relExpAtom -> > addExp relExpAtom 
+relExpAtom -> <= addExp relExpAtom 
+relExpAtom -> >= addExp relExpAtom 
+relExpAtom -> $ 
+eqExp -> relExp eqExpAtom 
+eqExpAtom -> == relExp eqExpAtom 
+eqExpAtom -> != relExp eqExpAtom 
+eqExpAtom -> $ 
+assignExp -> eqExp assignExpAtom 
+assignExpAtom -> = eqExp assignExpAtom 
+assignExpAtom -> $ 
+constExp -> assignExp
