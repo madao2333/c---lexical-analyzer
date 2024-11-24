@@ -8,6 +8,8 @@ compUnit -> $
 decl -> constDecl 
 decl -> varDecl 
 constDecl -> const bType constDef argConst ; 
+constDecl -> const struct Ident constDef argConst ;
+constDecl -> const union Ident constDef argConst ;
 argConst -> , constDef argConst 
 argConst -> $
 constDef -> Ident = constInitVal 
