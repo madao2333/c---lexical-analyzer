@@ -51,9 +51,6 @@ const_expr -> number
 const_expr -> CHAR
 funcDef -> funcType Ident ( funcFParams ) block 
 funcType -> void 
-funcType -> int
-funcType -> float
-funcType -> char
 funcFParams -> funcFParam argFunctionF 
 funcFParams -> $ 
 argFunctionF -> , funcFParam argFunctionF 
