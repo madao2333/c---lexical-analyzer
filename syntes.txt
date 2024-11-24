@@ -5,4 +5,4 @@ T -> F T1
 T1 -> * F T1 
 T1 -> $
 F -> ( E )
-F -> i
+F -> Ident

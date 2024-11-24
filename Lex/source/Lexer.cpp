@@ -74,7 +74,7 @@ void Lexer::advance() {
     this->skipSpc();
 
     if (pos >= input.length()) {
-        tokens.emplace_back(Token("", {ctokens::TokType::END_OF_FILE, 0}));
+        tokens.emplace_back(Token("#", {ctokens::TokType::END_OF_FILE, 0}));
         return;
     }
 

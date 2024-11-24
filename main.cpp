@@ -30,8 +30,9 @@ int main()
      cout << h;
     analyzer a;
     a.readSyntax();
-    // a.print();
+    a.print();
     a.toFirst();
     a.toFollow();
     a.printProdu();
+    a.work(h.getTokens());
 }

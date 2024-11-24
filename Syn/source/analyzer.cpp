@@ -12,6 +12,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <stack>
 #include "../include/V.h"
 #include "../include/Vn.h"
 #include "../include/Vt.h"
@@ -243,6 +244,8 @@ void analyzer::toFollow()
             break;
         lastsz = nowsz;
     }
+    setVt.insert("#");  //结束标志
+    setVt.erase("$");  //空标志
 
     // 输出 FOLLOW 
     cout << "FOLLOW " << endl;
@@ -271,8 +274,6 @@ void analyzer::toFollow()
 
 
 void analyzer::printProdu(){    //打印预测分析表
-    setVt.insert("#");  //结束标志
-    setVt.erase("$");  //空标志
     const int cellWidth = 20;
     cout << left << setw(cellWidth) << "";
     for(auto p:setVt){
@@ -284,12 +285,12 @@ void analyzer::printProdu(){    //打印预测分析表
         for(auto p:setVt){
             if(Produ[v.getLexeme()][p].empty()){
                 if(ProduFollow[v.getLexeme()][p]){
-                    cout << left << setw(cellWidth)<< v.getLexeme()+"->$";
+                    cout << left << setw(cellWidth)<< v.getLexeme()+" -> $";
                 }
                 else cout<< left << setw(cellWidth)<<"error";
             }
             else {
-                string now = v.getLexeme() + "->";
+                string now = v.getLexeme() + " -> ";
                 for(auto t:Produ[v.getLexeme()][p])
                     now+= t.getLexeme() + " ";
                 cout<< left << setw(cellWidth)<<now;
@@ -297,11 +298,80 @@ void analyzer::printProdu(){    //打印预测分析表
         }
         cout << endl;
     }
-    setVt.erase("#");  //结束标志
-    setVt.insert("$");  //空标志
+}
+
+
+string getlex(Token u){
+        switch (u.getP().first) {
+        case ctokens::TokType::KW:
+        case ctokens::TokType::OP:
+        case ctokens::TokType::SE:
+            return u.getLexeme();
+        case ctokens::TokType::IDN:
+            return "Ident";
+        case ctokens::TokType::INT:
+            return "INT";
+        case ctokens::TokType::FLOAT:
+            return "FLOAT";
+        case ctokens::TokType::CHAR:
+            return "CHAR";
+        case ctokens::TokType::END_OF_FILE:
+            return "#";
+        default:
+            return "UNKNOWN"; // Handle unknown token types
+    }
 }
 
 
 void  analyzer::work(vector<Token> VecToken){
+    stack<string> st;
+    st.push("#");   //结束符号
+    st.push("E");   //初始符号
+    int cntStep = 0;
+    cout << endl;
+    for(auto u:VecToken){
+        auto printreduction=[&]() {
+        cout<<++cntStep<<"\t\t"<<st.top()<<"#"<<u.getLexeme()<<"\t\t"<<"reduction"<<endl;
+        };
+        auto printmove=[&]() {
+        cout<<++cntStep<<"\t\t"<<st.top()<<"#"<<u.getLexeme()<<"\t\t"<<"move"<<endl;
+        };
+        auto printerror=[&]() {
+        cout<<++cntStep<<"\t\t"<<st.top()<<"#"<<u.getLexeme()<<"\t\t"<<"error"<<endl;
+        };
+        string nowtype = getlex(u);
+        while(!setVt.count(st.top())){
+            if(!Produ[st.top()][nowtype].empty()){
+                vector<string> nxt;
+                for(auto p:Produ[st.top()][nowtype])nxt.push_back(p.getLexeme());
+                printreduction();
+                st.pop();
+                while(!nxt.empty()){
+                    st.push(nxt.back());
+                    nxt.pop_back();
+                }
+            }
+            else if(ProduFollow[st.top()][nowtype]){
+                printreduction();
+                st.pop();
+            }
+            else {
+                printerror();
+                cout << "Matching failed" << endl;
+                assert(0);
+            }
+        }
+        if(st.top()==nowtype)
+        {
+            printmove();
+            st.pop();
+        }
+        else {
+            printerror();
+            cout << "error" << endl;
+            assert(0);
+        }
+    }
 
+    cout << "accept" << endl;
 }
