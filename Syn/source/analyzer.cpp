@@ -264,6 +264,13 @@ void analyzer::toFollow()
         if(cntnull[v.getLexeme()])
         for(auto p:FOLLOW[v.getLexeme()]){
             if(FIRST[v.getLexeme()].count(p)){
+                cout << v.getLexeme() << endl;
+                cout << "FIRST of" << v.getLexeme() << ":";
+                for(auto p:FIRST[v.getLexeme()])cout<<p<<" ";
+                cout << endl;
+                cout << "FOLLOW of" << v.getLexeme() << ":";
+                for(auto p:FOLLOW[v.getLexeme()])cout<<p<<" ";
+                cout << endl;
                 cout << "Error. Grammar has ambiguity" << endl;
                 assert(0);
             }
