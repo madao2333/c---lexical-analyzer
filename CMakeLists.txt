@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.27)
 project(untitled1)
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")  # 确保包含调试符号
 
 add_executable(untitled1 main.cpp
         Lex/source/TokenList.cpp
