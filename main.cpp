@@ -28,10 +28,10 @@ int main()
      Lexer h(input);
      h.tokenize();
      cout << h;
-
     analyzer a;
     a.readSyntax();
     // a.print();
     a.toFirst();
     a.toFollow();
+    a.printProdu();
 }
