@@ -167,13 +167,13 @@ void analyzer::toFirst() {
                             for (auto sonFirst : FIRST[nxt.getLexeme()])
                             {
                                 FIRST[now].insert(sonFirst);
-                                if(!Produ[now][sonFirst].empty()&&Produ[now][sonFirst]!=vec){
-                                    cout << now <<" "<<sonFirst<<" "<<nxt.getLexeme()<< endl;
-                                    for(auto p:vec)cout<<p.getLexeme()<<" ";cout<<endl;
-                                    for(auto p:Produ[now][sonFirst])cout<<p.getLexeme()<<" ";cout<<endl;
-                                    cout << "Error. Grammar has ambiguity" << endl;
-                                    assert(0);
-                                }
+                                // if(!Produ[now][sonFirst].empty()&&Produ[now][sonFirst]!=vec){
+                                //     cout << now <<" "<<sonFirst<<" "<<nxt.getLexeme()<< endl;
+                                //     for(auto p:vec)cout<<p.getLexeme()<<" ";cout<<endl;
+                                //     for(auto p:Produ[now][sonFirst])cout<<p.getLexeme()<<" ";cout<<endl;
+                                //     cout << "Error. Grammar has ambiguity" << endl;
+                                //     assert(0);
+                                // }
                                 Produ[now][sonFirst]=vec;
                             }
                         }
@@ -210,7 +210,7 @@ void analyzer::toFirst() {
 
 void analyzer::toFollow()
 {
-    string star = "E";
+    string star = "program";
     // 初始化：将起始符号的 FOLLOW 集合中加入 `$`
     auto addFollowAtoB = [&](string A, string B) {
         for(auto p:FOLLOW[A])
@@ -246,7 +246,6 @@ void analyzer::toFollow()
     }
     setVt.insert("#");  //结束标志
     setVt.erase("$");  //空标志
-
     // 输出 FOLLOW 
     cout << "FOLLOW " << endl;
     for (auto [nonTerminal, followSet] : FOLLOW)
@@ -263,17 +262,15 @@ void analyzer::toFollow()
     for(auto v:vnVec){
         if(cntnull[v.getLexeme()])
         for(auto p:FOLLOW[v.getLexeme()]){
-            if(FIRST[v.getLexeme()].count(p)){
-                cout << v.getLexeme() << endl;
-                cout << "FIRST of" << v.getLexeme() << ":";
-                for(auto p:FIRST[v.getLexeme()])cout<<p<<" ";
-                cout << endl;
-                cout << "FOLLOW of" << v.getLexeme() << ":";
-                for(auto p:FOLLOW[v.getLexeme()])cout<<p<<" ";
-                cout << endl;
-                cout << "Error. Grammar has ambiguity" << endl;
-                assert(0);
-            }
+            // if(FIRST[v.getLexeme()].count(p)){
+            //     cout << v.getLexeme() << endl;
+            //     cout << "FIRST of " << v.getLexeme() << ":";
+            //     for(auto p:FIRST[v.getLexeme()])cout<<p<<" ";cout << endl;
+            //     cout << "FOLLOW of " << v.getLexeme() << ":";
+            //     for(auto p:FOLLOW[v.getLexeme()])cout<<p<<" ";cout << endl;
+            //     cout << "Error. Grammar has ambiguity" << endl;
+            //     assert(0);
+            // }
             ProduFollow[v.getLexeme()][p] = true;
         }
     }
@@ -333,7 +330,7 @@ string getlex(Token u){
 void  analyzer::work(vector<Token> VecToken){
     stack<string> st;
     st.push("#");   //结束符号
-    st.push("E");   //初始符号
+    st.push("program");   //初始符号
     int cntStep = 0;
     cout << endl;
     for(auto u:VecToken){

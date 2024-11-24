@@ -33,6 +33,6 @@ int main()
     // a.print();    
     a.toFirst();
     a.toFollow();
-    a.printProdu();
+    // a.printProdu();
     a.work(h.getTokens());
 }

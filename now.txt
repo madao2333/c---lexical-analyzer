@@ -1,1 +1,5 @@
-i*i+i)
+int a = 10; 
+int main(){ 
+a=10; 
+return 0; 
+} 

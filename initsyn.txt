@@ -20,7 +20,7 @@
  bType -> float 
  bType -> char 
  funcDef -> funcType Ident ( funcFParams ) block 
- funcType -> void
+ funcType -> void 
  funcFParams -> funcFParam argFunctionF 
  funcFParams -> $ 
  argFunctionF -> , funcFParam argFunctionF 
