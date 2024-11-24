@@ -12,7 +12,13 @@ argConst -> , constDef argConst
 argConst -> $
 constDef -> Ident = constInitVal 
 constInitVal -> constExp 
-varDecl -> bType varDef argVarDecl ; 
+varDecl -> bType varDef argVarDecl ;
+varDecl -> struct Ident tempForStruct
+varDecl -> union Ident tempForUnion
+tempForStruct -> varDef argVarDecl ;
+tempForStruct -> { structBlockElem } structVars ;
+tempForUnion -> varDef argVarDecl ;
+tempForUnion -> { unionBlockElem } unionVars ;
 argVarDecl -> , varDef argVarDecl 
 argVarDecl -> $ 
 varDef -> Ident argVarDef 
@@ -22,14 +28,12 @@ initVal -> exp
 bType -> int 
 bType -> float 
 bType -> char 
-bType -> struct Ident
-bType -> union Ident
-structDef -> struct Ident { structBlockElem } structVars ;
+structDef -> struct Ident tempForStruct
 structVars -> Ident argStructS
 structVars-> $
 argStructS -> , Ident argStructS 
 argStructS -> $
-unionDef -> union Ident { unionBlockElem } unionVars ;
+unionDef -> union Ident tempForUnion
 unionBlockElem -> decl unionBlockElem
 unionVars -> Ident argUnionU
 unionVars -> $
@@ -52,6 +56,8 @@ funcFParams -> $
 argFunctionF -> , funcFParam argFunctionF 
 argFunctionF -> $ 
 funcFParam -> bType Ident 
+funcFParam -> struct Ident Ident
+funcFParam -> union Ident Ident
 block -> { blockItem } 
 blockItem -> decl blockItem 
 blockItem -> stmt blockItem 
