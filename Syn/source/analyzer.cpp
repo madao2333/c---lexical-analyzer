@@ -1,5 +1,6 @@
 #include <unordered_map>
 #include <map>
+#include <iomanip>
 #include <unordered_set>
 #include <iostream>
 #include <algorithm>
@@ -126,19 +127,18 @@ void analyzer::print()
         vn.print();
     }
 }
-    map<string, set<string> >FIRST;
-    map<string, int> cntnull;
+
+
 void analyzer::toFirst() {
     map<string, int> vis;
     map<string, int> getans;
-
     function<void(string)> dfs = [&](string now)
     {
         if (getans.count(now))
             return;
         if (vis[now] && (!getans.count(now)))
         {
-            cout << "There exists left recursion :" + now << endl;
+            cout << "Error. There exists left recursion :" + now << endl;
             assert(0);
         }
         vis[now]++;
@@ -164,7 +164,17 @@ void analyzer::toFirst() {
                         if (flag)
                         {
                             for (auto sonFirst : FIRST[nxt.getLexeme()])
+                            {
                                 FIRST[now].insert(sonFirst);
+                                if(!Produ[now][sonFirst].empty()&&Produ[now][sonFirst]!=vec){
+                                    cout << now <<" "<<sonFirst<<" "<<nxt.getLexeme()<< endl;
+                                    for(auto p:vec)cout<<p.getLexeme()<<" ";cout<<endl;
+                                    for(auto p:Produ[now][sonFirst])cout<<p.getLexeme()<<" ";cout<<endl;
+                                    cout << "Error. Grammar has ambiguity" << endl;
+                                    assert(0);
+                                }
+                                Produ[now][sonFirst]=vec;
+                            }
                         }
                         if (!cntnull[nxt.getLexeme()])
                             flag = 0;
@@ -199,8 +209,7 @@ void analyzer::toFirst() {
 
 void analyzer::toFollow()
 {
-    map<string, set<string>> FOLLOW; // 保存每个非终结符的 FOLLOW 集合
-    string star = "program";
+    string star = "E";
     // 初始化：将起始符号的 FOLLOW 集合中加入 `$`
     auto addFollowAtoB = [&](string A, string B) {
         for(auto p:FOLLOW[A])
@@ -247,4 +256,52 @@ void analyzer::toFollow()
         }
         cout << endl;
     }
+
+    for(auto v:vnVec){
+        if(cntnull[v.getLexeme()])
+        for(auto p:FOLLOW[v.getLexeme()]){
+            if(FIRST[v.getLexeme()].count(p)){
+                cout << "Error. Grammar has ambiguity" << endl;
+                assert(0);
+            }
+            ProduFollow[v.getLexeme()][p] = true;
+        }
+    }
+}
+
+
+void analyzer::printProdu(){    //打印预测分析表
+    setVt.insert("#");  //结束标志
+    setVt.erase("$");  //空标志
+    const int cellWidth = 20;
+    cout << left << setw(cellWidth) << "";
+    for(auto p:setVt){
+        cout << left << setw(cellWidth)<< p;
+    }
+    cout << endl;
+    for(auto v:vnVec){
+        cout << left << setw(cellWidth)<< v.getLexeme();
+        for(auto p:setVt){
+            if(Produ[v.getLexeme()][p].empty()){
+                if(ProduFollow[v.getLexeme()][p]){
+                    cout << left << setw(cellWidth)<< v.getLexeme()+"->$";
+                }
+                else cout<< left << setw(cellWidth)<<"error";
+            }
+            else {
+                string now = v.getLexeme() + "->";
+                for(auto t:Produ[v.getLexeme()][p])
+                    now+= t.getLexeme() + " ";
+                cout<< left << setw(cellWidth)<<now;
+            }
+        }
+        cout << endl;
+    }
+    setVt.erase("#");  //结束标志
+    setVt.insert("$");  //空标志
+}
+
+
+void  analyzer::work(vector<Token> VecToken){
+
 }
