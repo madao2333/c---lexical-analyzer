@@ -1,12 +1,12 @@
 program -> compUnit 
 compUnit -> decl compUnit 
 compUnit -> funcDef compUnit 
-compUnit -> structDef compUnit
-compUnit -> unionDef compUnit
 compUnit -> switchDef compUnit
 compUnit -> $ 
 decl -> constDecl 
 decl -> varDecl 
+decl -> varDeclAndstructDef
+decl -> varDeclAndunionDef
 constDecl -> const bType constDef argConst ; 
 constDecl -> const struct Ident constDef argConst ;
 constDecl -> const union Ident constDef argConst ;
@@ -15,8 +15,8 @@ argConst -> $
 constDef -> Ident = constInitVal 
 constInitVal -> constExp 
 varDecl -> bType varDef argVarDecl ;
-varDecl -> struct Ident tempForStruct
-varDecl -> union Ident tempForUnion
+varDeclAndstructDef -> struct Ident tempForStruct
+varDeclAndunionDef -> union Ident tempForUnion
 tempForStruct -> varDef argVarDecl ;
 tempForStruct -> { structBlockElem } structVars ;
 tempForUnion -> varDef argVarDecl ;
@@ -30,12 +30,10 @@ initVal -> exp
 bType -> int 
 bType -> float 
 bType -> char 
-structDef -> struct Ident tempForStruct
 structVars -> Ident argStructS
 structVars-> $
 argStructS -> , Ident argStructS 
 argStructS -> $
-unionDef -> union Ident tempForUnion
 unionBlockElem -> decl unionBlockElem
 unionVars -> Ident argUnionU
 unionVars -> $
