@@ -127,11 +127,11 @@ void analyzer::print()
     }
 }
     map<string, set<string> >FIRST;
+    map<string, int> cntnull;
 void analyzer::toFirst() {
     map<string, int> vis;
     map<string, int> getans;
 
-    map<string, int> cntnull;
     function<void(string)> dfs = [&](string now)
     {
         if (getans.count(now))
@@ -182,7 +182,7 @@ void analyzer::toFirst() {
         dfs(v.getLexeme());
     for (auto v : vtVec)
         dfs(v.getLexeme());
-
+    FIRST.erase("$");
     cout << FIRST.size() << endl;
     for (auto [now, v] : FIRST)
     {
@@ -202,70 +202,49 @@ void analyzer::toFollow()
     map<string, set<string>> FOLLOW; // 保存每个非终结符的 FOLLOW 集合
     string star = "program";
     // 初始化：将起始符号的 FOLLOW 集合中加入 `$`
+    auto addFollowAtoB = [&](string A, string B) {
+        for(auto p:FOLLOW[A])
+            FOLLOW[B].insert(p);
+    };
+    auto addFirstAtoB = [&](string A, string B) {
+        for(auto p:FIRST[A])
+            FOLLOW[B].insert(p);
+    };
     FOLLOW[star].insert("#");
-    bool changed = true;
-    while (changed)
-    {
-        changed = false;
-        for (auto &r : vnVec)
-        {
-            string A = r.getLexeme(); // 当前非终结符
-            for (auto &t : r.getRules())
-            {
-                for (size_t i = 0; i < t.size(); i++)
-                {
-                    string B = t[i].getLexeme(); // 当前符号
-                    if (!Vt::isVt(t[i].getLexeme()))
-                    {
-                        if (i + 1 < t.size())
-                        {
-                            string beta = t[i + 1].getLexeme(); // β 的第一个符号
-                            for (const string &ter : FIRST[beta])
-                            {
-                                if (ter != "$")
-                                {
-                                    if (FOLLOW[B].insert(ter).second)
-                                    {
-                                        changed = true; // FOLLOW 集更新
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    bool btoe = true;
-                    for (size_t j = i + 1; j < t.size(); j++)
-                    {
-                        string beta = t[j].getLexeme();
-                        if (FIRST[beta].count("$") == 0)
-                        {
-                            btoe = false;
-                            break;
-                        }
-                    }
-                    if (btoe || i + 1 == t.size())
-                    {
-                        for (const string &terminal : FOLLOW[A])
-                        {
-                            if (FOLLOW[B].insert(terminal).second)
-                            {
-                                changed = true; // FOLLOW 集更新
-                            }
-                        }
+    int lastsz = 1;
+    while(1){
+        for(auto _:vnVec){
+            for(auto vec:_.getRules()){
+                int len = vec.size();
+                for (int i = len - 1; i >= 0;i--){
+                    addFollowAtoB(_.getLexeme(),vec[i].getLexeme());
+                    if(!cntnull[vec[i].getLexeme()])break;
+                }
+                for (int i = len - 2; i >= 0;i--){
+                    for (int j = i + 1; j < len;j++){
+                        addFirstAtoB(vec[j].getLexeme(), vec[i].getLexeme());
+                        if(!cntnull[vec[j].getLexeme()])break;
                     }
                 }
             }
         }
-        // 输出 FOLLOW 
-        cout << "FOLLOW " << endl;
-        for (auto &[nonTerminal, followSet] : FOLLOW)
+        int nowsz=0;
+        for(auto[p,t]:FOLLOW)nowsz+=t.size();
+        if(nowsz==lastsz)
+            break;
+        lastsz = nowsz;
+    }
+
+    // 输出 FOLLOW 
+    cout << "FOLLOW " << endl;
+    for (auto [nonTerminal, followSet] : FOLLOW)
+    {
+        if(setVt.count(nonTerminal))continue;
+        cout << nonTerminal << ": ";
+        for (auto terminal : followSet)
         {
-            cout << nonTerminal << ": ";
-            for (auto &terminal : followSet)
-            {
-                cout << terminal << " ";
-            }
-            cout << endl;
+            cout << terminal << " ";
         }
+        cout << endl;
     }
 }
