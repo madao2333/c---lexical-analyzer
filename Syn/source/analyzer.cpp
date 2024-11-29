@@ -1,3 +1,4 @@
+#include <ostream>
 #include <unordered_map>
 #include <map>
 #include <iomanip>
@@ -327,28 +328,27 @@ string getlex(Token u){
 }
 
 
-void  analyzer::work(vector<Token> VecToken){
+void  analyzer::work(std::ostream& os, vector<Token> VecToken){
     stack<string> st;
     st.push("#");   //结束符号
     st.push("program");   //初始符号
     int cntStep = 0;
-    cout << endl;
     for(auto u:VecToken){
-        auto printreduction=[&]() {
-        cout<<++cntStep<<"\t\t"<<st.top()<<"#"<<u.getLexeme()<<"\t\t"<<"reduction"<<endl;
+        auto printreduction=[&](std::ostream& os) {
+        os<<++cntStep<<" "<<st.top()<<"#"<<u.getLexeme()<<" "<<"reduction"<<endl;
         };
-        auto printmove=[&]() {
-        cout<<++cntStep<<"\t\t"<<st.top()<<"#"<<u.getLexeme()<<"\t\t"<<"move"<<endl;
+        auto printmove=[&](std::ostream& os) {
+        os<<++cntStep<<" "<<st.top()<<"#"<<u.getLexeme()<<" "<<"move"<<endl;
         };
-        auto printerror=[&]() {
-        cout<<++cntStep<<"\t\t"<<st.top()<<"#"<<u.getLexeme()<<"\t\t"<<"error"<<endl;
+        auto printerror=[&](std::ostream& os) {
+        os<<++cntStep<<" "<<st.top()<<"#"<<u.getLexeme()<<" "<<"error"<<endl;
         };
         string nowtype = getlex(u);
         while(!setVt.count(st.top())){
             if(!Produ[st.top()][nowtype].empty()){
                 vector<string> nxt;
                 for(auto p:Produ[st.top()][nowtype])nxt.push_back(p.getLexeme());
-                printreduction();
+                printreduction(os);
                 st.pop();
                 while(!nxt.empty()){
                     st.push(nxt.back());
@@ -356,26 +356,26 @@ void  analyzer::work(vector<Token> VecToken){
                 }
             }
             else if(ProduFollow[st.top()][nowtype]){
-                printreduction();
+                printreduction(os);
                 st.pop();
             }
             else {
-                printerror();
-                cout << "Matching failed" << endl;
+                printerror(os);
+                os << "Matching failed" << endl;
                 assert(0);
             }
         }
         if(st.top()==nowtype)
         {
-            printmove();
+            printmove(os);
             st.pop();
         }
         else {
-            printerror();
-            cout << "error" << endl;
+            printerror(os);
+            os << "error" << endl;
             assert(0);
         }
     }
 
-    cout << "accept" << endl;
+    os << "accept";
 }

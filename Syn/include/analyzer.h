@@ -7,6 +7,7 @@
 #include "Vt.h"
 #include "../../Lex/include/Token.h"
 #include "../../Lex/include/Lexer.h"
+#include <ostream>
 #include <string>
 #include <vector>
 #include <map>
@@ -27,7 +28,7 @@ class analyzer {
         void toFirst();
         void toFollow();
         void printProdu(); //打印预测分析表
-        void work(vector<Token> VecToken); //分析过程
+        void work(std::ostream& os, vector<Token> VecToken); //分析过程
     private:
         std::vector<V> turnStringVecToVvec(std::vector<std::string> stringVec);
 };

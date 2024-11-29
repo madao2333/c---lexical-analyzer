@@ -45,6 +45,8 @@ std::string Token::print() const {
 }
 
 std::ostream &operator<<(std::ostream &os, const Token &token) {
-    os << token.getLexeme() << "\t" << token.print() << "\n";
+    if (token.getP().first != ctokens::TokType::END_OF_FILE) {
+        os << token.getLexeme() << " " << token.print() << "\n";
+    }
     return os;
 }
