@@ -48,8 +48,9 @@ switchBlockElem -> break ; switchBlockElem
 switchBlockElem -> $
 const_expr -> number
 const_expr -> CHAR
-funcDef -> funcType Ident ( funcFParams ) block 
-funcType -> void 
+funcDef -> void tempForFunc
+tempForFunc -> Ident ( funcFParams ) block
+tempForFunc -> main ( funcFParams ) block
 funcFParams -> funcFParam argFunctionF 
 funcFParams -> $ 
 argFunctionF -> , funcFParam argFunctionF 
