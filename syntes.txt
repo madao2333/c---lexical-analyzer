@@ -1,7 +1,6 @@
 program -> compUnit 
 compUnit -> decl compUnit 
 compUnit -> funcDef compUnit 
-compUnit -> switchDef compUnit
 compUnit -> $ 
 decl -> constDecl 
 decl -> varDecl 
@@ -43,10 +42,10 @@ switchDef -> switch ( eqExp ) { switchBlock }
 switchBlock -> case const_expr : { switchBlockElem } switchBlock
 switchBlock -> default : { switchBlockElem } switchBlock
 switchBlock -> $
-switchBlockElem -> blockItem breakStmt blockItem
+switchBlockElem -> decl switchBlockElem
+switchBlockElem -> stmt switchBlockElem
+switchBlockElem -> break ; switchBlockElem
 switchBlockElem -> $
-breakStmt -> break ;
-breakStmt -> $
 const_expr -> number
 const_expr -> CHAR
 funcDef -> funcType Ident ( funcFParams ) block 

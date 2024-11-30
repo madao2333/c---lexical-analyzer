@@ -3,6 +3,7 @@
 //
 
 #include <cctype>
+#include <cstddef>
 #include <utility>
 #include <algorithm>
 #include <sstream>
@@ -41,7 +42,7 @@ void Lexer::regularWord() {
     }
 }
 
-std::unordered_map<std::string, std::pair<ctokens::TokType, int>>::iterator Lexer::scan(std::unordered_map<std::string, std::pair<ctokens::TokType, int>> list, const std::string &word) {
+std::unordered_map<std::string, std::pair<ctokens::TokType, int>>::iterator Lexer::scan(std::unordered_map<std::string, std::pair<ctokens::TokType, int>>& list, const std::string &word) {
     return list.find(word);
 }
 
@@ -154,7 +155,7 @@ void Lexer::advance() {
                     if (logOp != "||" and logOp != "&&") {
                         logOp.pop_back(); // Remove redundant character if present
                     }
-                    if(scan(ctokens::operators, logOp)==NULL){
+                    if(scan(ctokens::operators, logOp) == ctokens::operators.end()) {
                         tokens.emplace_back(Token(logOp, ctokens::TokType::INVALID_TOK));
                     }
                     else 
@@ -162,7 +163,7 @@ void Lexer::advance() {
                 }
             } else {
                 std::string logOp(1, currentChar);
-                if(scan(ctokens::operators, logOp)==NULL){
+                if(scan(ctokens::operators, logOp) == ctokens::operators.end()){
                         tokens.emplace_back(Token(logOp, ctokens::TokType::INVALID_TOK));
                 }
                 else 

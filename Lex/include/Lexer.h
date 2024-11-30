@@ -33,7 +33,7 @@ private:
 
 private:
     // Private utility functions
-    static std::unordered_map<std::string, std::pair<ctokens::TokType, int>>::iterator scan(std::unordered_map<std::string, std::pair<ctokens::TokType, int>> list, const std::string &word);
+    static std::unordered_map<std::string, std::pair<ctokens::TokType, int>>::iterator scan(std::unordered_map<std::string, std::pair<ctokens::TokType, int>>& list, const std::string &word);
     static int isFloat(const std::string &str);
     static bool isArithOp(const char &ch);
     static bool isSE(const char &currentChar);
